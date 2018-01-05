@@ -49,7 +49,7 @@ function animate() {
   if (!isStoped) {
   }
 
-  if (!isStoped && Math.random() > 0.90) {
+  if (!isStoped && Math.random() > 0.98) {
     var left = Math.random() * (canvas.clientWidth - 30);
     var speed = Math.random() * 3 + 1;
     var color = colors[Math.floor(Math.random()*colors.length)];
