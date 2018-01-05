@@ -64,10 +64,11 @@ function animate() {
   }
 
   boxes = boxes.filter(function(box) {
+    box.currentPos += box.speed;
+
     ctx.fillStyle = box.color;
     ctx.fillRect(box.left, box.currentPos, 20, 20);
 
-    box.currentPos += box.speed;
     if(box.currentPos >= canvas.clientHeight) {
       return false;
     }
