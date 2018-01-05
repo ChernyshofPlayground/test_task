@@ -1,15 +1,20 @@
 var currentPos = 0;
 var score = 0;
+var isStoped = false;
+
+function renderScore() {
+  var scoreEl = document.getElementById('score');
+  scoreEl.innerHTML = `${score}`;
+}
 
 function onClickBox(e) {
   var x = e.pageX,
       y = e.pageY;
-  if (x > 320 && x < 340 && y > currentPos+20
-      && y < currentPos+40) {
+  if (x > 320 && x < 350 && y > currentPos+20
+      && y < currentPos+50) {
     currentPos = 0;
     score += 1;
-    var scoreEl = document.getElementById('score');
-    scoreEl.innerHTML = `${score}`;
+    renderScore();
   }
 }
 
@@ -25,6 +30,15 @@ function animate() {
   }
 
   requestAnimationFrame(animate);
+
+  var startButton = document.getElementById('start');
+  startButton.addEventListener('click', function(e) {
+    currentPos = 0;
+    score = 0;
+    isStoped = false;
+    renderScore();
+  });
 }
 
 document.body.onload = animate;
+
