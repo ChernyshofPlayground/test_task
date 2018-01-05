@@ -1,6 +1,7 @@
 var score = 0;
 var isStoped = false;
 var boxes = [];
+var colors = ["#e57373", "#F06292", "#BA68C8", "#9575CD", "#7986CB", "#64B5F6", "#4FC3F7", "#4DD0E1", "#4DB6AC", "#81C784", "#FF8A65"];
 
 
 function renderScore() {
@@ -51,16 +52,19 @@ function animate() {
   if (!isStoped && Math.random() > 0.98) {
     var left = Math.random() * (canvas.clientWidth + 30) - 60;
     var speed = Math.random() * 3 + 1;
+    var color = colors[Math.floor(Math.random()*colors.length)];
     boxes.push(
       {
         left: left,
         speed: speed,
+        color: color,
         currentPos: 0
       }
     );
   }
 
   boxes = boxes.filter(function(box) {
+    ctx.fillStyle = box.color;
     ctx.fillRect(box.left, box.currentPos, 20, 20);
 
     box.currentPos += box.speed;
