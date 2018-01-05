@@ -18,12 +18,29 @@ function onClickBox(e) {
   }
 }
 
+function onClickStart(_e) {
+  currentPos = 0;
+  score = 0;
+  isStoped = false;
+  renderScore();
+}
+
+function onClickStop(_e) {
+  console.log("kek");
+  currentPos = 0;
+  score = 0;
+  isStoped = true;
+  renderScore();
+}
+
 function animate() {  
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');  
   canvas.addEventListener('click', onClickBox);
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);  
-  ctx.fillRect(320, currentPos, 20, 20);
+  if (!isStoped) {
+    ctx.fillRect(320, currentPos, 20, 20);
+  }
   currentPos += 1;
   if(currentPos >= canvas.clientHeight) {
     currentPos = 0;
@@ -32,13 +49,9 @@ function animate() {
   requestAnimationFrame(animate);
 
   var startButton = document.getElementById('start');
-  startButton.addEventListener('click', function(e) {
-    currentPos = 0;
-    score = 0;
-    isStoped = false;
-    renderScore();
-  });
+  var stopButton = document.getElementById('stop');
+  startButton.addEventListener('click', onClickStart);
+  stopButton.addEventListener('click', onClickStop);
 }
 
 document.body.onload = animate;
-
