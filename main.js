@@ -1,7 +1,7 @@
-var currentPos = 0;
 var score = 0;
 var isStoped = false;
-var left = 320;
+var boxes = [];
+
 
 function renderScore() {
   var scoreEl = document.getElementById('score');
@@ -12,32 +12,31 @@ function onClickBox(width) {
   return function (e) {
     var x = e.pageX,
         y = e.pageY;
-    if (x > left && x < left+30 && y > currentPos+20
-        && y < currentPos+50) {
-      currentPos = 0;
-      score += 1;
-      left = Math.random() * (width-30);
-      console.log(width);
-      console.log(left);
-      renderScore();
-    }
+    boxes = boxes.filter(function(box) {
+      if (x > box.left && x < box.left+30 && y > box.currentPos+20
+          && y < box.currentPos+50) {
+        score += 1;
+        renderScore();
+        return false;
+      }
+
+      return true;
+    });
   }
 }
 
 function onClickStart(_e) {
-  currentPos = 0;
-  score = 0;
+  if (!isStoped) {
+    score = 0;
+    boxes = [];
+  }
   isStoped = false;
-  left = 320;
   renderScore();
 }
 
 function onClickStop(_e) {
-  console.log("kek");
-  currentPos = 0;
-  score = 0;
   isStoped = true;
-  left = 320;
+  boxes = [];
   renderScore();
 }
 
@@ -47,12 +46,34 @@ function animate() {
   canvas.addEventListener('click', onClickBox(canvas.clientWidth));
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientWidth);  
   if (!isStoped) {
-    ctx.fillRect(left, currentPos, 20, 20);
   }
-  currentPos += 1;
-  if(currentPos >= canvas.clientHeight) {
-    currentPos = 0;
+
+  if (!isStoped && Math.random() > 0.98) {
+    var left = Math.random() * (canvas.clientWidth + 30) - 60;
+    var speed = Math.random() * 3 + 1;
+    boxes.push(
+      {
+        left: left,
+        speed: speed,
+        currentPos: 0
+      }
+    );
   }
+
+  boxes = boxes.filter(function(box) {
+    ctx.fillRect(box.left, box.currentPos, 20, 20);
+
+    box.currentPos += box.speed;
+    if(box.currentPos >= canvas.clientHeight) {
+      return false;
+    }
+    return true;
+
+    // if(box.currentPos >= canvas.clientHeight) {
+    //   box.currentPos = 0;
+    // }
+  });
+  
 
   requestAnimationFrame(animate);
 
