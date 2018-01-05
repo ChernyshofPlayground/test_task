@@ -58,7 +58,7 @@ function animate() {
         left: left,
         speed: speed,
         color: color,
-        currentPos: 0
+        currentPos: -24
       }
     );
   }
